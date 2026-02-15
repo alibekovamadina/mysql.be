@@ -1,14 +1,20 @@
 <?php
-     header("Access-Control-Allow-Origin: http://localhost:5173");
-    header("Access-Control-Allow-Credentials: true");
-    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type, Authorization");
+    	$database = "mydatabase";
+        $host = "127.0.0.1";
+        $port = "3306";
+        $user = "root";
+        $pass = "";
+        $dsn = "mysql:dbname={$database};host={$host};port={$port}";
+        $options = [
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+        ];
+        $connection = new PDO($dsn, $user, $pass, $options);
 
-    if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-        http_response_code(200);
-        exit;
-    }
+        $sql = 'SELECT * FROM `users`';
+        $query = $connection->query($sql);
+        $users = $query->fetchAll();
     
     echo json_encode([
-        'title' => 'Главная страница'
+        'title' => 'Главная страница',
+        'users' => $users
     ]);
